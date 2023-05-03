@@ -52,9 +52,16 @@ class LaplaceEquationSolver:
         print(constant_voltage.shape)
         
 
-        for y, line in enumerate(constant_voltage):
-            for x, val in enumerate(line):
-                print(x,y, val)
+
+        y=0
+        while y<constant_voltage.shape[0]:
+            x=0
+            while x<constant_voltage.shape[1]:
+                if constant_voltage[x][y] != 0:
+                    print(x,y, constant_voltage[x][y])
+                x+=delta_x
+            y+=delta_y
+
 
 
         raise NotImplementedError
