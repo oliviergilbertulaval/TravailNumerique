@@ -53,18 +53,32 @@ class LaplaceEquationSolver:
         
 
 
+        
+
+        matrice_0=np.zeros((constant_voltage.shape[0] + 2, constant_voltage.shape[1] + 2))
+        matrice_dep= constant_voltage
+        
+        for i in range(self.nb_iterations):
+            V_ng = matrice_0
+            V_ng[0:-2, 1:-1]=matrice_dep
+            V_nd = matrice_0
+            V_nd[2:, 1:-1]=matrice_dep
+            V_nh = matrice_0
+            V_nh[1:-1, 0:-2]=matrice_dep
+            V_nb = matrice_0
+            V_nb[1:-1, 2:]=matrice_dep
+            matrice_dep=((1/delta_x**2+1/delta_y**2)**(-1) * 0.5 * ((V_nd+V_ng)/delta_x**2+(V_nb+V_nh)/delta_y**2))[1:-1, 1:-1]
+            
         y=0
         while y<constant_voltage.shape[0]:
             x=0
             while x<constant_voltage.shape[1]:
-                if constant_voltage[x][y] != 0:
-                    print(x,y, constant_voltage[x][y])
+                if matrice_dep[x][y] != 0:
+                    print(x,y, matrice_dep[x][y])
                 x+=delta_x
             y+=delta_y
-
-
-
-        raise NotImplementedError
+            
+        return ScalarField(matrice_dep)
 
     def _solve_in_polar_coordinate(
             self,

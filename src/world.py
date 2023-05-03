@@ -147,7 +147,7 @@ class World:
         """
 
         test = LaplaceEquationSolver(nb_relaxation_iterations)
-        test._solve_in_cartesian_coordinate(self._circuit_voltage, 1, 1)
+        print(test._solve_in_cartesian_coordinate(self._circuit_voltage, 1, 1))
 
         raise NotImplementedError
 
