@@ -145,6 +145,10 @@ class World:
         nb_relaxation_iterations : int
             Number of iterations performed to obtain the potential by the relaxation method (default = 1000)
         """
+
+        test = LaplaceEquationSolver(nb_relaxation_iterations)
+        test._solve_in_cartesian_coordinate(self._circuit_voltage, 1, 1)
+
         raise NotImplementedError
 
     def show_circuit(self, nodes_position_in_figure: dict = None):

@@ -48,6 +48,15 @@ class LaplaceEquationSolver:
             the electrical components and in the empty space between the electrical components, while the field V
             always gives V(x, y) = 0 if (x, y) is not a point belonging to an electrical component of the circuit.
         """
+        print(constant_voltage)
+        print(constant_voltage.shape)
+        
+
+        for y, line in enumerate(constant_voltage):
+            for x, val in enumerate(line):
+                print(x,y, val)
+
+
         raise NotImplementedError
 
     def _solve_in_polar_coordinate(
