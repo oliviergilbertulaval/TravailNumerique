@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import skimage
+
 
 from src.coordinate_and_position import CoordinateSystem
 from src.fields import ScalarField
