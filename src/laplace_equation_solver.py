@@ -1,4 +1,6 @@
 import numpy as np
+import matplotlib.pyplot as plt
+import skimage
 
 from src.coordinate_and_position import CoordinateSystem
 from src.fields import ScalarField
@@ -48,36 +50,41 @@ class LaplaceEquationSolver:
             the electrical components and in the empty space between the electrical components, while the field V
             always gives V(x, y) = 0 if (x, y) is not a point belonging to an electrical component of the circuit.
         """
-        print(constant_voltage)
-        print(constant_voltage.shape)
-        
+
+        circuit_list = []
+        for y, line in enumerate(constant_voltage):
+            for x, val in enumerate(line):
+                if val != 0:
+                    circuit_list.append((x, y, val))
 
 
-        
 
-        matrice_0=np.zeros((constant_voltage.shape[0] + 2, constant_voltage.shape[1] + 2))
-        matrice_dep= constant_voltage
-        
+        matrice_dep = constant_voltage
+
+
         for i in range(self.nb_iterations):
-            V_ng = matrice_0
+            V_ng = np.zeros((constant_voltage.shape[1] + 2, constant_voltage.shape[0] + 2))
             V_ng[0:-2, 1:-1]=matrice_dep
-            V_nd = matrice_0
+            V_nd = np.zeros((constant_voltage.shape[1] + 2, constant_voltage.shape[0] + 2))
             V_nd[2:, 1:-1]=matrice_dep
-            V_nh = matrice_0
+            V_nh = np.zeros((constant_voltage.shape[1] + 2, constant_voltage.shape[0] + 2))
             V_nh[1:-1, 0:-2]=matrice_dep
-            V_nb = matrice_0
+            V_nb = np.zeros((constant_voltage.shape[1] + 2, constant_voltage.shape[0] + 2))
             V_nb[1:-1, 2:]=matrice_dep
             matrice_dep=((1/delta_x**2+1/delta_y**2)**(-1) * 0.5 * ((V_nd+V_ng)/delta_x**2+(V_nb+V_nh)/delta_y**2))[1:-1, 1:-1]
-            
-        y=0
-        while y<constant_voltage.shape[0]:
-            x=0
-            while x<constant_voltage.shape[1]:
-                if matrice_dep[x][y] != 0:
-                    print(x,y, matrice_dep[x][y])
-                x+=delta_x
-            y+=delta_y
-            
+            for k in circuit_list:
+                matrice_dep[k[1], k[0]] = k[2]
+
+
+
+        fig, ax = plt.subplots(1, 2, figsize=(15, 7))
+
+        #ax[0].axis('off')
+        #ax[1].axis('off')
+        ax[0].imshow(constant_voltage, cmap='jet', alpha=0.85)
+        ax[1].imshow(matrice_dep, cmap='jet', alpha=0.85)
+        plt.show()
+        
         return ScalarField(matrice_dep)
 
     def _solve_in_polar_coordinate(
