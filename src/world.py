@@ -145,9 +145,13 @@ class World:
         nb_relaxation_iterations : int
             Number of iterations performed to obtain the potential by the relaxation method (default = 1000)
         """
+        if (self._coordinate_system == CoordinateSystem.CARTESIAN):
+            test = LaplaceEquationSolver(nb_relaxation_iterations)
+            test._solve_in_cartesian_coordinate(self._circuit_voltage, 1, 1)
+        elif(self._coordinate_system == CoordinateSystem.POLAR):
+            print("POLAR")
 
-        test = LaplaceEquationSolver(nb_relaxation_iterations)
-        test._solve_in_cartesian_coordinate(self._circuit_voltage, 1, 1)
+
 
         raise NotImplementedError
 

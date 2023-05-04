@@ -4,7 +4,7 @@ from sympy import Symbol
 
 from src import Circuit, CoordinateSystem, VoltageSource, Wire, World
 
-from numpy import pi
+from numpy import pi, sin, cos
 
 
 if __name__ == "__main__":
@@ -25,15 +25,17 @@ if __name__ == "__main__":
     radial_eqs = (r_expression_radial, theta_expression_radial)
 
     wires = [
-        Wire((20, 0), (20, 180), tangential_eqs, polar_variables, LOW_WIRE_RESISTANCE),
-        VoltageSource((20, 180), (20, 360), tangential_eqs, polar_variables, BATTERY_VOLTAGE),
+        Wire((20, 0), (20, 100), tangential_eqs, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((20, 100), (20, 120), tangential_eqs, polar_variables, HIGH_WIRE_RESISTANCE),
+        Wire((20, 120), (20, 180), tangential_eqs, polar_variables, LOW_WIRE_RESISTANCE),
+        VoltageSource((20, 180), (20, 0), tangential_eqs, polar_variables, BATTERY_VOLTAGE),
     ]
     ground_position = (20, 180)
 
     circuit = Circuit(wires, ground_position)
     world = World(circuit=circuit, coordinate_system=CoordinateSystem.POLAR, shape=WORLD_SHAPE)
     world.show_circuit(
-
+        {0: (20, 0), 1: (20, 100), 2: (20, 120), 3: (20, 180)}
     )
     world.compute()
     world.show_all()
