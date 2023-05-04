@@ -161,9 +161,11 @@ class World:
             X = np.linspace(0,self._circuit_voltage.shape[1],101)
             Y = np.linspace(0,self._circuit_voltage.shape[0],101)
 
+            #Ix, Iy, Iz = self._circuit_current
             fig, ax = plt.subplots(1, 2, figsize=(15, 7))
             potential = ndimage.rotate(potentiel, 90)
-            plt.streamplot(X,Y,Ex,Ey,color='k')
+            #ax[0].streamplot(X,Y,Ix,Iy,color='k')
+            ax[1].streamplot(X,Y,Ex,Ey,color='k')
             ax[0].imshow(potential, cmap='jet', alpha=0.85)
             ax[0].invert_xaxis()
             ax[1].imshow(potential, cmap='jet', alpha=0.85)
