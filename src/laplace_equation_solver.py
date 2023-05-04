@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy import ndimage
 
 
 from src.coordinate_and_position import CoordinateSystem
@@ -79,12 +80,16 @@ class LaplaceEquationSolver:
 
         fig, ax = plt.subplots(1, 2, figsize=(15, 7))
 
-        #ax[0].axis('off')
-        #ax[1].axis('off')
-        ax[0].imshow(constant_voltage, cmap='jet', alpha=0.85)
-        ax[1].imshow(matrice_dep, cmap='jet', alpha=0.85)
+        voltage = ndimage.rotate(constant_voltage, 90)
+        potential = ndimage.rotate(matrice_dep, 90)
+
+
+        ax[0].imshow(voltage, cmap='jet', alpha=0.85)
+        ax[0].invert_xaxis()
+        ax[1].imshow(potential, cmap='jet', alpha=0.85)
+        ax[1].invert_xaxis()
         plt.show()
-        
+
         return ScalarField(matrice_dep)
 
     def _solve_in_polar_coordinate(

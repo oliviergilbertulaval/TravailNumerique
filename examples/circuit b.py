@@ -50,7 +50,8 @@ if __name__ == "__main__":
     circuit = Circuit(wires, ground_position)
     world = World(circuit=circuit, coordinate_system=CoordinateSystem.CARTESIAN, shape=WORLD_SHAPE)
     world.show_circuit(
-        {0: (20, 20), 1: (20, 45), 2: (20, 60), 3: (80, 60), 4: (80, 40), 5: (80, 20), 6: (20, 20), 7: (20, 40)}
+        {0: (20, 20), 1: (20, 45), 2: (20, 60), 3: (20, 80), 4: (40, 80), 5: (40, 60), 6: (40, 45), 7: (40, 20), 8: (60, 80), 9: (60, 60),
+        10: (60, 45), 11: (60, 20), 12:(80, 20), 13:(80, 45), 14:(80, 60), 15:(80, 80)}
     )
     world.compute()
     world.show_all()
