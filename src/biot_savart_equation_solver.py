@@ -1,5 +1,7 @@
 import numpy as np
 from scipy.constants import mu_0, pi
+import matplotlib.pyplot as plt
+from scipy import ndimage
 
 from src.coordinate_and_position import CoordinateSystem
 from src.fields import VectorField
@@ -38,6 +40,22 @@ class BiotSavartEquationSolver:
             B_z(x, y) are the 3 components of the magnetic vector at a given point (x, y) in space. Note that
             B_x = B_y = 0 is always True in our 2D world.
         """
+
+        fig, ax = plt.subplots(1, 2, figsize=(15, 7))
+
+        courant = ndimage.rotate(electric_current, 90)
+        #potential = ndimage.rotate(matrice_dep, 90)
+
+
+        ax[0].imshow(courant, cmap='jet', alpha=0.85)
+        ax[0].invert_xaxis()
+        #ax[1].imshow(potential, cmap='jet', alpha=0.85)
+        ax[1].invert_xaxis()
+        plt.show()
+
+
+
+
         raise NotImplementedError
 
     def _solve_in_polar_coordinate(

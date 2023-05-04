@@ -78,17 +78,6 @@ class LaplaceEquationSolver:
 
 
 
-        fig, ax = plt.subplots(1, 2, figsize=(15, 7))
-
-        voltage = ndimage.rotate(constant_voltage, 90)
-        potential = ndimage.rotate(matrice_dep, 90)
-
-
-        ax[0].imshow(voltage, cmap='jet', alpha=0.85)
-        ax[0].invert_xaxis()
-        ax[1].imshow(potential, cmap='jet', alpha=0.85)
-        ax[1].invert_xaxis()
-        plt.show()
 
         return ScalarField(matrice_dep)
 
