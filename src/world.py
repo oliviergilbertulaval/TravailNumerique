@@ -149,30 +149,23 @@ class World:
         """
         if (self._coordinate_system == CoordinateSystem.CARTESIAN):
             test = LaplaceEquationSolver(nb_relaxation_iterations)
-            #test2 = BiotSavartEquationSolver()
-            test._solve_in_cartesian_coordinate(self._circuit_voltage, 1, 1)
-            #test2._solve_in_cartesian_coordinate(self._circuit_current, 1, 1)
+            test2 = BiotSavartEquationSolver()
+
+            test2._solve_in_cartesian_coordinate(self._circuit_current, self.delta_q1, self.delta_q2)
 
 
-            potentiel = test._solve_in_cartesian_coordinate(self._circuit_voltage, 1, 1)
-            Ey, Ex = np.gradient(potentiel)
-            Ey = -Ey
-            Ex = -Ex
-            X = np.linspace(0,self._circuit_voltage.shape[1],101)
-            Y = np.linspace(0,self._circuit_voltage.shape[0],101)
+            self._potential = test._solve_in_cartesian_coordinate(self._circuit_voltage, self.delta_q1, self.delta_q2)
 
-            #Ix, Iy, Iz = self._circuit_current
-            fig, ax = plt.subplots(1, 2, figsize=(15, 7))
-            potential = ndimage.rotate(potentiel, 90)
-            #ax[0].streamplot(X,Y,Ix,Iy,color='k')
-            ax[1].streamplot(X,Y,Ex,Ey,color='k')
-            ax[0].imshow(potential, cmap='jet', alpha=0.85)
-            ax[0].invert_xaxis()
-            ax[1].imshow(potential, cmap='jet', alpha=0.85)
-            ax[1].invert_xaxis()
-            plt.show()
+            Ey, Ex = np.gradient(self._potential)
+            Ey = -np.array(Ey)
+            Ex = -np.array(Ex)
+            self._electric_field = np.array([Ex, Ey])
 
+            #print(self._electric_field.shape)
+            #self._electric_field = np.array([Ey, Ex])
+            #self._electric_field = VectorField(Ey, Ex)
 
+            #print(self._electric_field)
 
 
 
@@ -183,7 +176,7 @@ class World:
             print("POLAR")
 
 
-
+        return 4
         raise NotImplementedError
 
     def show_circuit(self, nodes_position_in_figure: dict = None):

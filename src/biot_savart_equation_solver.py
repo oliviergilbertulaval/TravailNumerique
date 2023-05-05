@@ -41,22 +41,26 @@ class BiotSavartEquationSolver:
             B_x = B_y = 0 is always True in our 2D world.
         """
 
-        fig, ax = plt.subplots(1, 2, figsize=(15, 7))
 
-        courant = ndimage.rotate(electric_current, 90)
-        #potential = ndimage.rotate(matrice_dep, 90)
+        circuit_list = []
+        for y, line in enumerate(electric_current):
+            for x, val in enumerate(line):
+                if (val[0] != 0 or val[1]!=0):
+                    circuit_list.append((x, y, val))
 
+        print(len(circuit_list))
+        print(circuit_list)
 
-        ax[0].imshow(courant, cmap='jet', alpha=0.85)
-        ax[0].invert_xaxis()
-        #ax[1].imshow(potential, cmap='jet', alpha=0.85)
-        ax[1].invert_xaxis()
-        plt.show()
+        champ_B = np.zeros((electric_current.shape[1], electric_current.shape[0]))
+        for y in range(electric_current.shape[0]):
+            for x in range(electric_current.shape[1]):
+                for i in circuit_list:
+                    r = VectorField([i[0]-x, i[1]-y])
+                    module_r = np.sqrt((i[0]-x)**2+(i[1]-y)**2)
+                    champ_B[y, x] = i[2].cross(r)/module_r**3
 
+        return VectorField(mu_0*champ_B/(4*pi))
 
-
-
-        raise NotImplementedError
 
     def _solve_in_polar_coordinate(
             self,

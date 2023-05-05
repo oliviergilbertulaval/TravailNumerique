@@ -25,17 +25,21 @@ if __name__ == "__main__":
     radial_eqs = (r_expression_radial, theta_expression_radial)
 
     wires = [
-        Wire((40, 0), (40, 100), tangential_eqs, polar_variables, LOW_WIRE_RESISTANCE),
-        Wire((40, 100), (40, 120), tangential_eqs, polar_variables, HIGH_WIRE_RESISTANCE),
-        Wire((40, 120), (40, 180), tangential_eqs, polar_variables, LOW_WIRE_RESISTANCE),
-        VoltageSource((40, 180), (40, 0), tangential_eqs, polar_variables, BATTERY_VOLTAGE),
+        Wire((40, 20), (40, 40), tangential_eqs, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((40, 40), (40, 60), tangential_eqs, polar_variables, HIGH_WIRE_RESISTANCE),
+        Wire((40, 60), (40, 80), tangential_eqs, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((40, 80), (20, 80), radial_eqs, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((20, 80), (20, 60), tangential_eqs, polar_variables, LOW_WIRE_RESISTANCE),
+        VoltageSource((20, 60), (20, 40), tangential_eqs, polar_variables, BATTERY_VOLTAGE),
+        Wire((20, 40), (20, 20), tangential_eqs, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((20, 20), (40, 20), radial_eqs, polar_variables, LOW_WIRE_RESISTANCE),
     ]
-    ground_position = (40, 180)
+    ground_position = (20, 60)
 
     circuit = Circuit(wires, ground_position)
     world = World(circuit=circuit, coordinate_system=CoordinateSystem.POLAR, shape=WORLD_SHAPE)
     world.show_circuit(
-        {0: (40, 0), 1: (40, 100), 2: (40, 120), 3: (40, 180)}
+        {0: (40, 20), 1: (40, 40), 2: (40, 60), 3: (40, 80), 4:(20, 80), 5:(20, 60), 6:(20, 40), 7:(20, 20)}
     )
     world.compute()
     world.show_all()

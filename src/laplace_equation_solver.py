@@ -108,7 +108,32 @@ class LaplaceEquationSolver:
             the electrical components and in the empty space between the electrical components, while the field V
             always gives V(r, θ) = 0 if (r, θ) is not a point belonging to an electrical component of the circuit.
         """
-        raise NotImplementedError
+        circuit_list = []
+        for theta, line in enumerate(constant_voltage):
+            for r, val in enumerate(line):
+                if val != 0:
+                    circuit_list.append((r, theta, val))
+
+
+
+        matrice_dep = constant_voltage
+
+
+        for i in range(self.nb_iterations):
+            V_ng = np.zeros((constant_voltage.shape[1] + 2, constant_voltage.shape[0] + 2))
+            V_ng[0:-2, 1:-1]=matrice_dep
+            V_nd = np.zeros((constant_voltage.shape[1] + 2, constant_voltage.shape[0] + 2))
+            V_nd[2:, 1:-1]=matrice_dep
+            V_nh = np.zeros((constant_voltage.shape[1] + 2, constant_voltage.shape[0] + 2))
+            V_nh[1:-1, 0:-2]=matrice_dep
+            V_nb = np.zeros((constant_voltage.shape[1] + 2, constant_voltage.shape[0] + 2))
+            V_nb[1:-1, 2:]=matrice_dep
+            matrice_dep=((1/delta_r**2+1/delta_theta**2)**(-1) * 0.5 * ((V_nd+V_ng)/delta_r**2+(V_nb+V_nh)/delta_theta**2))[1:-1, 1:-1]
+            for k in circuit_list:
+                matrice_dep[k[1], k[0]] = k[2]
+
+            return ScalarField(matrice_dep)
+
 
     def solve(
             self,
