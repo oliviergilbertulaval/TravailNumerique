@@ -46,19 +46,34 @@ class BiotSavartEquationSolver:
         for y, line in enumerate(electric_current):
             for x, val in enumerate(line):
                 if (val[0] != 0 or val[1]!=0):
-                    circuit_list.append((x, y, val))
+                    circuit_list.append((x, y, VectorField(np.array([[[val[0], val[1], 0.0]]]))))
 
-        print(len(circuit_list))
-        print(circuit_list)
 
-        champ_B = np.zeros((electric_current.shape[1], electric_current.shape[0]))
+
+
+        champ_B = np.zeros((electric_current.shape[1], electric_current.shape[0], 3))
+        test_field = np.zeros((electric_current.shape[1], electric_current.shape[0], 1))
         for y in range(electric_current.shape[0]):
             for x in range(electric_current.shape[1]):
-                for i in circuit_list:
-                    r = VectorField([i[0]-x, i[1]-y])
-                    module_r = np.sqrt((i[0]-x)**2+(i[1]-y)**2)
-                    champ_B[y, x] = i[2].cross(r)/module_r**3
 
+                for i in circuit_list:
+
+
+
+                    r = VectorField(np.array([[[float(i[0]-x), float(i[1]-y), 0.0]]]))
+
+
+
+                    module_r = np.sqrt((i[0]-x)**2+(i[1]-y)**2)
+                    if module_r == 0:
+                        module_r = 1
+
+                    champ_B[y, x] = i[2].cross(r)/module_r**3
+                test_field[y, x] = champ_B[y, x][2]
+        fig, ax = plt.subplots(1, 2, figsize=(15, 7))
+
+        ax[0].imshow(test_field, cmap='jet', alpha=0.45)
+        ax[1].imshow(test_field)
         return VectorField(mu_0*champ_B/(4*pi))
 
 

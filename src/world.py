@@ -151,21 +151,25 @@ class World:
             test = LaplaceEquationSolver(nb_relaxation_iterations)
             test2 = BiotSavartEquationSolver()
 
-            test2._solve_in_cartesian_coordinate(self._circuit_current, self.delta_q1, self.delta_q2)
+
 
 
             self._potential = test._solve_in_cartesian_coordinate(self._circuit_voltage, self.delta_q1, self.delta_q2)
 
             Ey, Ex = np.gradient(self._potential)
-            Ey = -np.array(Ey)
-            Ex = -np.array(Ex)
-            self._electric_field = np.array([Ex, Ey])
+            Ey = -Ey
+            Ex = -Ex
+            E = np.zeros((self._potential.shape[0], self._potential.shape[1], 2))
 
-            #print(self._electric_field.shape)
-            #self._electric_field = np.array([Ey, Ex])
-            #self._electric_field = VectorField(Ey, Ex)
+            for y, i in enumerate(E):
+                for x, k in enumerate(i):
+                    E[y, x] = [Ey[y, x], Ex[y, x]]
 
-            #print(self._electric_field)
+            self._electric_field = VectorField(E)
+
+            self._magnetic_field = test2._solve_in_cartesian_coordinate(self._circuit_current, self.delta_q1, self.delta_q2)
+
+            self._energy_flux = self._electric_field.cross(self._magnetic_field)/mu_0
 
 
 
