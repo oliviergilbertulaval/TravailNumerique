@@ -43,10 +43,13 @@ class BiotSavartEquationSolver:
 
 
         circuit_list = []
+        points = []
         for y, line in enumerate(electric_current):
             for x, val in enumerate(line):
                 if (val[0] != 0 or val[1]!=0):
                     circuit_list.append((x, y, VectorField(np.array([[[val[0], val[1], 0.0]]]))))
+                    points.append((x, y))
+
 
 
 
@@ -55,21 +58,23 @@ class BiotSavartEquationSolver:
         test_field = np.zeros((electric_current.shape[1], electric_current.shape[0], 1))
         for y in range(electric_current.shape[0]):
             for x in range(electric_current.shape[1]):
-
+                b = VectorField(np.array([[[0.0, 0.0, 0.0]]]))
                 for i in circuit_list:
 
 
-
-                    r = VectorField(np.array([[[float(i[0]-x), float(i[1]-y), 0.0]]]))
-
+                    r = VectorField(np.array([[[y-float(i[1]), x-float(i[0]), 0.0]]]))
 
 
                     module_r = np.sqrt((i[0]-x)**2+(i[1]-y)**2)
                     if module_r == 0:
                         module_r = 1
 
-                    champ_B[y, x] = i[2].cross(r)/module_r**3
+                    b += i[2].cross(r)/module_r**3
+                champ_B[y, x] = b
+                if (x, y) in points:
+                    champ_B[y, x] = 0
                 test_field[y, x] = champ_B[y, x][2]
+            print("Time left:", 101-y, "s")
         fig, ax = plt.subplots(1, 2, figsize=(15, 7))
 
         ax[0].imshow(test_field, cmap='jet', alpha=0.45)

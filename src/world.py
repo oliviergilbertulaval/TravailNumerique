@@ -169,7 +169,7 @@ class World:
 
             self._magnetic_field = test2._solve_in_cartesian_coordinate(self._circuit_current, self.delta_q1, self.delta_q2)
 
-            self._energy_flux = self._electric_field.cross(self._magnetic_field)/mu_0
+            self._energy_flux = self._electric_field.cross(self._magnetic_field)
 
 
 
