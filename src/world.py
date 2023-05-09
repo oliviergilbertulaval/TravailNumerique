@@ -156,16 +156,7 @@ class World:
 
             self._potential = test._solve_in_cartesian_coordinate(self._circuit_voltage, self.delta_q1, self.delta_q2)
 
-            Ey, Ex = np.gradient(self._potential)
-            Ey = -Ey
-            Ex = -Ex
-            E = np.zeros((self._potential.shape[0], self._potential.shape[1], 2))
-
-            for y, i in enumerate(E):
-                for x, k in enumerate(i):
-                    E[y, x] = [Ey[y, x], Ex[y, x]]
-
-            self._electric_field = VectorField(E)
+            self._electric_field= -self._potential.gradient()
 
             self._magnetic_field = test2._solve_in_cartesian_coordinate(self._circuit_current, self.delta_q1, self.delta_q2)
 
