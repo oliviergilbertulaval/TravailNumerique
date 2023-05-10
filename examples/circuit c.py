@@ -1,10 +1,8 @@
 import env_examples  # Modifies path, DO NOT REMOVE
 
-from sympy import Symbol
+from sympy import Symbol, pi, sin, cos
 
 from src import Circuit, CoordinateSystem, VoltageSource, Wire, World
-
-from numpy import pi, sin, cos
 
 
 if __name__ == "__main__":
