@@ -40,3 +40,72 @@ plt.imshow(solve_cartesian(vecto))
 plt.show()
 
 
+import env_examples  # Modifies path, DO NOT REMOVE
+
+from sympy import Symbol, pi, sin, cos, sqrt
+
+from src import Circuit, CoordinateSystem, VoltageSource, Wire, World
+
+
+# if __name__ == "__main__":
+#     WORLD_SHAPE = (101, 101)
+#     BATTERY_VOLTAGE = 1.0
+#     HIGH_WIRE_RESISTANCE = 1.0
+#     LOW_WIRE_RESISTANCE = 0.01
+
+#     cartesian_variables = Symbol("x"), Symbol("y")
+#     x, y = cartesian_variables
+
+#     x_expression_top = sqrt(1600 - (y-50)**2)
+#     y_expression_right = sqrt(1600 - (x-50)**2)
+    
+#     q1_eqs = (x_expression_top, y_expression_right)
+#     q2_eqs = (x_expression_top, -y_expression_right)
+#     q3_eqs = (-x_expression_top, -y_expression_right)
+#     q4_eqs = (-x_expression_top, y_expression_right)
+
+#     wires = [
+#         Wire((40*cos(275*pi/180) + 50, 40*sin(275*pi/180) + 50), (40*cos(0*pi/180) + 50, 40*sin(0*pi/180) + 50), q4_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
+#         Wire((40*cos(0*pi/180) + 50, 40*sin(0*pi/180) + 50), (40*cos(85*pi/180) + 50, 40*sin(85*pi/180) + 50), q1_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
+#         Wire((40*cos(85*pi/180) + 50, 40*sin(85*pi/180) + 50), (40*cos(90*pi/180) + 50, 40*sin(90*pi/180) + 50), q1_eqs, cartesian_variables, HIGH_WIRE_RESISTANCE),
+#         Wire((40*cos(90*pi/180) + 50, 40*sin(90*pi/180) + 50), (40*cos(95*pi/180) + 50, 40*sin(95*pi/180) + 50), q2_eqs, cartesian_variables, HIGH_WIRE_RESISTANCE),
+#         Wire((40*cos(95*pi/180) + 50, 40*sin(95*pi/180) + 50), (40*cos(180*pi/180) + 50, 40*sin(180*pi/180) + 50), q2_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
+#         Wire((40*cos(180*pi/180) + 50, 40*sin(180*pi/180) + 50), (40*cos(265*pi/180) + 50, 40*sin(265*pi/180) + 50), q3_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
+#         VoltageSource((40*cos(265*pi/180) + 50, 40*sin(265*pi/180) + 50), (40*cos(270*pi/180) + 50, 40*sin(270*pi/180) + 50), q3_eqs, cartesian_variables, BATTERY_VOLTAGE),
+#         VoltageSource((40*cos(270*pi/180) + 50, 40*sin(270*pi/180) + 50), (40*cos(275*pi/180) + 50, 40*sin(275*pi/180) + 50), q4_eqs, cartesian_variables, BATTERY_VOLTAGE),
+#     ]
+    
+
+if __name__ == "__main__":
+    WORLD_SHAPE = (101, 101)
+    BATTERY_VOLTAGE = 1.0
+    WIRE_RESISTANCE = 0.01
+
+    # Define the parametric equations for a circle with radius 40 and center (50,50)
+    t = Symbol("t")
+    x = 40*cos(t) + 50
+    y = 40*sin(t) + 50
+    
+    # Define the equation for the wires
+    wire_eqs = (x, y)
+
+    # Define the wires and voltage sources
+    wires = [
+        Wire((40*cos(275*pi/180) + 50, 40*sin(275*pi/180) + 50), (40*cos(0*pi/180) + 50, 40*sin(0*pi/180) + 50), wire_eqs, (t,), WIRE_RESISTANCE),
+        Wire((40*cos(0*pi/180) + 50, 40*sin(0*pi/180) + 50), (40*cos(85*pi/180) + 50, 40*sin(85*pi/180) + 50), wire_eqs, (t,), WIRE_RESISTANCE),
+        Wire((40*cos(85*pi/180) + 50, 40*sin(85*pi/180) + 50), (40*cos(90*pi/180) + 50, 40*sin(90*pi/180) + 50), wire_eqs, (t,), WIRE_RESISTANCE),
+        Wire((40*cos(90*pi/180) + 50, 40*sin(90*pi/180) + 50), (40*cos(95*pi/180) + 50, 40*sin(95*pi/180) + 50), wire_eqs, (t,), WIRE_RESISTANCE),
+        Wire((40*cos(95*pi/180) + 50, 40*sin(95*pi/180) + 50), (40*cos(180*pi/180) + 50, 40*sin(180*pi/180) + 50), wire_eqs, (t,), WIRE_RESISTANCE),
+        Wire((40*cos(180*pi/180) + 50, 40*sin(180*pi/180) + 50), (40*cos(265*pi/180) + 50, 40*sin(265*pi/180) + 50), wire_eqs, (t,), WIRE_RESISTANCE),
+        VoltageSource((40*cos(265*pi/180) + 50, 40*sin(265*pi/180) + 50), (40*cos(270*pi/180) + 50, 40*sin(270*pi/180) + 50), wire_eqs, (t,), BATTERY_VOLTAGE),
+        VoltageSource((40*cos(270*pi/180) + 50, 40*sin(270*pi/180) + 50), (40*cos(275*pi/180) + 50, 40*sin(275*pi/180) + 50), wire_eqs, (t,), BATTERY_VOLTAGE),
+    ]
+    ground_position = (40*cos(265*pi/180) + 50, 40*sin(265*pi/180) + 50)
+
+    circuit = Circuit(wires, ground_position)
+    world = World(circuit=circuit, coordinate_system=CoordinateSystem.CARTESIAN, shape=WORLD_SHAPE)
+    world.show_circuit(
+        {0: (40, 0), 1: (40, 100), 2: (40, 120), 3: (40, 180)}
+    )
+    world.compute()
+    world.show_all()
