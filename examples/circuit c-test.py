@@ -17,13 +17,6 @@ if __name__ == "__main__":
     cartesian_variables = Symbol("x"), Symbol("y")
     x, y = cartesian_variables
 
-    x_expression_vertical = 0 * x
-    y_expression_vertical = y
-    vertical_eqs = (x_expression_vertical, y_expression_vertical)
-
-    x_expression_horizontal = x
-    y_expression_horizontal = 0 * y
-    horizontal_eqs = (x_expression_horizontal, y_expression_horizontal)
     
     x_expression_diagonal = x
     y_expression_diagonal = y
