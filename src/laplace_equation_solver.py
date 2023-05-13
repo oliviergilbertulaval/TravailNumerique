@@ -113,7 +113,12 @@ class LaplaceEquationSolver:
             for r, val in enumerate(line):
                 if val != 0:
                     circuit_list.append((r, theta, val))
+        print("WTF")
+        fig = plt.figure(figsize=(8, 8))
+        ax = fig.add_subplot(111)
 
+        ax.imshow(constant_voltage, origin="lower", cmap="hsv")
+        plt.show()
 
 
         matrice_dep = constant_voltage
