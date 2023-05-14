@@ -8,11 +8,13 @@ from numpy import pi, sin, cos
 
 
 if __name__ == "__main__":
-    WORLD_SHAPE = (101, 91)
+    #on initialise l'espace, le voltage et les résistances   
+    WORLD_SHAPE = (101, 101)
     BATTERY_VOLTAGE = 1.0
     HIGH_WIRE_RESISTANCE = 1.0
     LOW_WIRE_RESISTANCE = 0.01
 
+    #on paramétrise avec des équations tangentielles et radiales
     polar_variables = Symbol("r"), Symbol("theta")
     r, theta = polar_variables
 
@@ -24,6 +26,7 @@ if __name__ == "__main__":
     theta_expression_radial = 0 * theta
     radial_eqs = (r_expression_radial, theta_expression_radial)
 
+    # on construit le circuit en oubliant pas de changer les angles de degré à rad
     wires = [
         Wire((40, 15*pi/(2* WORLD_SHAPE[1])), (40, 40*pi/(2* WORLD_SHAPE[1])), tangential_eqs, polar_variables, LOW_WIRE_RESISTANCE),
         VoltageSource((40, 40*pi/(2* WORLD_SHAPE[1])), (40, 50*pi/(2* WORLD_SHAPE[1])), tangential_eqs, polar_variables, BATTERY_VOLTAGE),
@@ -34,6 +37,7 @@ if __name__ == "__main__":
         Wire((60, 40*pi/(2* WORLD_SHAPE[1])), (60, 15*pi/(2* WORLD_SHAPE[1])), tangential_eqs, polar_variables, LOW_WIRE_RESISTANCE),
         Wire((60, 15*pi/(2* WORLD_SHAPE[1])), (40, 15*pi/(2* WORLD_SHAPE[1])), radial_eqs, polar_variables, LOW_WIRE_RESISTANCE),
     ]
+    #on définit la ground_position comme étant juste avant la batterie
     ground_position = (40, 40*pi/(2* WORLD_SHAPE[1]))
 
     circuit = Circuit(wires, ground_position)

@@ -6,11 +6,13 @@ from src import Circuit, CoordinateSystem, VoltageSource, Wire, World
 
 
 if __name__ == "__main__":
+    #on initialise l'espace, le voltage et les résistances
     WORLD_SHAPE = (101, 101)
     BATTERY_VOLTAGE = 1.0
     HIGH_WIRE_RESISTANCE = 1.0
     LOW_WIRE_RESISTANCE = 0.01
 
+    #on paramétrise
     cartesian_variables = Symbol("x"), Symbol("y")
     x, y = cartesian_variables
 
@@ -22,6 +24,7 @@ if __name__ == "__main__":
     y_expression_horizontal = 0 * y
     horizontal_eqs = (x_expression_horizontal, y_expression_horizontal)
 
+    #on construit le circuit
     wires = [
         Wire((20, 20), (20, 45), vertical_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
         VoltageSource((20, 45), (20, 60), vertical_eqs, cartesian_variables, BATTERY_VOLTAGE),
@@ -45,6 +48,7 @@ if __name__ == "__main__":
         Wire((80, 60), (80, 80), vertical_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
         Wire((80, 80), (60, 80), horizontal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
     ]
+    #on met le ground_position juste avant la batterie
     ground_position = (20, 45)
 
     circuit = Circuit(wires, ground_position)

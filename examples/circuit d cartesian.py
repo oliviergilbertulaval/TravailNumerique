@@ -8,6 +8,7 @@ from src import Circuit, CoordinateSystem, VoltageSource, Wire, World
 from circle_function import full_arch
 
 if __name__ == "__main__":
+    #on initialise l'espace, le voltage et les résistances
     WORLD_SHAPE = (101, 101)
     
     #longueur de la batterie ainsi que son voltage adapté pour garder un voltage de 1 V total

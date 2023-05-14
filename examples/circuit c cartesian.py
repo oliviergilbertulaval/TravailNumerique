@@ -8,12 +8,14 @@ from src import Circuit, CoordinateSystem, VoltageSource, Wire, World
 from circle_function import top_circle_function, bottom_circle_function, full_circle_function
 
 if __name__ == "__main__":
+    #on initialise l'espace, le voltage er les résistances
     WORLD_SHAPE = (101, 101)
     precision = 30
     BATTERY_VOLTAGE = 1.0/precision
     HIGH_WIRE_RESISTANCE = 1.0/precision
     LOW_WIRE_RESISTANCE = 0.01/precision
 
+    #on paramétrise avec des équations diagonales
     cartesian_variables = Symbol("x"), Symbol("y")
     x, y = cartesian_variables
 
@@ -22,6 +24,8 @@ if __name__ == "__main__":
     y_expression_diagonal = y
     diagonal_eqs = (x_expression_diagonal, y_expression_diagonal)
 
+
+    #on construit le circuit, par simplicité en 4 parties
     wires = []
     
     #High resistance from (35, 70) to (65, 70)
@@ -50,6 +54,7 @@ if __name__ == "__main__":
         wires.append(Wire(top_circle_function(precision, (25, 50), (35, 70))[k], top_circle_function(precision, (25, 50), (35, 70))[k+1], 
                           diagonal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE))
 
+    #on met le ground_position juste avant la batterie
     ground_position = (65, 30)
     circuit = Circuit(wires, ground_position)
     world = World(circuit=circuit, coordinate_system=CoordinateSystem.CARTESIAN, shape=WORLD_SHAPE)

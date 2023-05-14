@@ -1,87 +1,67 @@
 from sympy import Symbol, pi, sin, cos
 from math import sqrt
 
-#circuit c
-def top_circle_function(precision, tuple_1, tuple_2):
-    delta_x = (tuple_2[0] - tuple_1[0]) / precision
-    delta_y = tuple_2[1] - tuple_1[1]
-    rayon_2 = sqrt((tuple_2[0] - 50) ** 2 + (tuple_2[1] - 50) ** 2)
-    rayon_1 = sqrt((tuple_1[0] - 50) ** 2 + (tuple_1[1] - 50) ** 2)
+# circuit c
+# function qui itère sur x et qui calcule les valeur de y avec une racine carée
+def top_circle_function(precision, tuple_dep, tuple_end):
+    delta_x = (tuple_end[0] - tuple_dep[0]) / precision
+    
+    rayon_2 = sqrt((tuple_end[0] - 50) ** 2 + (tuple_end[1] - 50) ** 2)
+    rayon_1 = sqrt((tuple_dep[0] - 50) ** 2 + (tuple_dep[1] - 50) ** 2)
+    #on choisit la poisition du centre (50, 50) comme étant le centre du centre
+    #ainsi on raise un erreur si les points départs et arrivés sont pas à la même distance
     if rayon_2 != rayon_1:
         raise ValueError("Deux rayons différents")
     posi_dict = {}
-    posi_list = []
+    #on crée un dict avec des indices et leurs points associés, ce qui va être utile pour world.show_circuit()
     for i in range(precision+1):
-        posi_dict[i]= (tuple_1[0]+delta_x*i, 50 + sqrt(rayon_1 ** 2 - (tuple_1[0] + delta_x * i - 50) ** 2))
-        posi_list.append((tuple_1[0]+delta_x*i, 50 + sqrt(rayon_1 ** 2 - (tuple_1[0] + delta_x * i - 50) ** 2)))
+        posi_dict[i]= (tuple_dep[0]+delta_x*i, 50 + sqrt(rayon_1 ** 2 - (tuple_dep[0] + delta_x * i - 50) ** 2))
     
     return posi_dict
 
-def bottom_circle_function(precision, tuple_1, tuple_2):
-    delta_x = (tuple_2[0] - tuple_1[0]) / precision
-    delta_y = tuple_2[1] - tuple_1[1]
-    rayon_2 = sqrt((tuple_2[0] - 50) ** 2 + (tuple_2[1] - 50) ** 2)
-    rayon_1 = sqrt((tuple_1[0] - 50) ** 2 + (tuple_1[1] - 50) ** 2)
+#on refait la même affaire mais avec un moins avant la racine pour exprimer le dessous
+def bottom_circle_function(precision, tuple_dep, tuple_end):
+    delta_x = (tuple_end[0] - tuple_dep[0]) / precision
+    
+    rayon_2 = sqrt((tuple_end[0] - 50) ** 2 + (tuple_end[1] - 50) ** 2)
+    rayon_1 = sqrt((tuple_dep[0] - 50) ** 2 + (tuple_dep[1] - 50) ** 2)
     if rayon_2 != rayon_1:
         raise ValueError("Deux rayons différents")
     posi_dict = {}
-    posi_list = []
     for i in range(precision+1):
-        posi_dict[i]= (tuple_1[0]+delta_x*i, 50 - sqrt(rayon_1 ** 2 - (tuple_1[0] + delta_x * i - 50) ** 2))
-        posi_list.append((tuple_1[0]+delta_x*i, 50 - sqrt(rayon_1 ** 2 - (tuple_1[0] + delta_x * i - 50) ** 2)))
-    
+        posi_dict[i]= (tuple_dep[0]+delta_x*i, 50 - sqrt(rayon_1 ** 2 - (tuple_dep[0] + delta_x * i - 50) ** 2))
+            
     return posi_dict
 
+#cette fonction est utilisé dans world.show_circuit(), elle ne fait qu'unire les deux fonctions précédentes en un dictionnaire
 def full_circle_function(precision, tuple_dep):
     posi_dict = top_circle_function(precision, tuple_dep, (100 - tuple_dep[0], tuple_dep[1]))
     for i in range(precision+1):
         posi_dict[i+precision] = bottom_circle_function(precision, (100 - tuple_dep[0], tuple_dep[1]), tuple_dep)[i]
     return posi_dict
-#print(full_circle_function(8, (0, 50)))
 
 
 #circuit d
-def top_circle_function2(precision, tuple_1, tuple_2):
-    delta_x = (tuple_2[0] - tuple_1[0]) / precision
-    rayon_2 = sqrt(tuple_2[0] ** 2 + tuple_2[1] ** 2)
-    rayon_1 = sqrt(tuple_1[0] ** 2 + tuple_1[1] ** 2)
+#même affaire que top_circle_function mais centré à (0,0)
+def top_circle_function2(precision, tuple_dep, tuple_end):
+    delta_x = (tuple_end[0] - tuple_dep[0]) / precision
+    
+    rayon_2 = sqrt(tuple_end[0] ** 2 + tuple_end[1] ** 2)
+    rayon_1 = sqrt(tuple_dep[0] ** 2 + tuple_dep[1] ** 2)
     if rayon_2 != rayon_1:
         raise ValueError("Deux rayons différents")
     posi_dict = {}
-    posi_list = []
     for i in range(precision+1):
-        posi_dict[i]= (tuple_1[0]+delta_x*i, sqrt(rayon_1 ** 2 - (tuple_1[0] + delta_x * i) ** 2))
-        posi_list.append((tuple_1[0]+delta_x*i, sqrt(rayon_1 ** 2 - (tuple_1[0] + delta_x * i) ** 2)))
+        posi_dict[i]= (tuple_dep[0]+delta_x*i, sqrt(rayon_1 ** 2 - (tuple_dep[0] + delta_x * i) ** 2))
     
     return posi_dict
 
-# def straight_lines(precision, tuple_1, tuple_2):
-#     delta_x = (tuple_2[0] - tuple_1[0]) / precision
-#     delta_y = (tuple_2[1] - tuple_1[1]) / precision
-#     posi_dict = {}
-#     posi_list = []
-#     for i in range(precision+1):
-#         posi_dict[i] = (tuple_1[0] + delta_x * i, tuple_1[1] + delta_y * i)
-    
-#     return posi_dict
-      
-#print(straight_lines(10, (10,0), (0, 10)))
-
+#utilise top_circle_function2 pour créer un arc de cercle avec n'importe quel 4 points (les coins)
 def full_arch(precision, tuple_t1, tuple_t2, tuple_b1, tuple_b2):
     posi_dict = top_circle_function2(precision, tuple_t1, tuple_t2)
-    # print(posi_dict)
     posi_dict[precision+1] = tuple_b2
-    # print(posi_dict)
     for i in range(precision+1):
         posi_dict[1+i+precision] = top_circle_function2(precision, tuple_b2, tuple_b1)[i]
-        # print(posi_dict)
     posi_dict[precision * 2 + 2] = tuple_t1
     return posi_dict
 
-
-# print(top_circle_function2(4, (5/13 * 100, 12/13 * 100), (12/13 * 100, 5/13 * 100)))
-# print(top_circle_function2(4, (12/13 * 70, 5/13 * 70), (5/13 * 70, 12/13 * 70)))
-# print("------------------------------------------")
-# print(full_arch(4, (5/13 * 100, 12/13 * 100), (12/13 * 100, 5/13 * 100), (5/13 * 70, 12/13 * 70), (12/13 * 70, 5/13 * 70)))
-# for value in full_arch(4, (5/13 * 100, 12/13 * 100), (12/13 * 100, 5/13 * 100), (5/13 * 70, 12/13 * 70), (12/13 * 70, 5/13 * 70)).values():
-#     print(value)
