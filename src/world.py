@@ -168,7 +168,6 @@ class World:
 
 
         elif(self._coordinate_system == CoordinateSystem.POLAR):
-            print("TEST")
             test = LaplaceEquationSolver(nb_relaxation_iterations)
             test2 = BiotSavartEquationSolver()
             self._potential = test._solve_in_polar_coordinate(self._circuit_voltage, self.delta_q1, self.delta_q2)

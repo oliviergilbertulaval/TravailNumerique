@@ -113,24 +113,26 @@ class LaplaceEquationSolver:
             for r, val in enumerate(line):
                 if val != 0:
                     circuit_list.append((r, theta, val))
-        print(circuit_list)
+        #print(circuit_list)
 
 
 
         matrice_dep = constant_voltage.copy()
-
+        nouvelle_matrice = constant_voltage.copy()
 
         for i in range(self.nb_iterations):
             for theta, ligne in enumerate(matrice_dep):
                 for r, val in enumerate(ligne):
                     if((r!=0 and r!=constant_voltage.shape[1]-1) and theta!=constant_voltage.shape[0]-1):
                         #comme on a un np.array, on doit quand meme utiliser delta_theta=1 pour les indices
-                        matrice_dep[theta][r] = 1/(2/delta_r**2+2/(r*delta_theta)**2)*(
+                        nouvelle_matrice[theta][r] = 1/(2/delta_r**2+2/(r*delta_theta)**2)*(
                             (matrice_dep[theta][int(r+delta_r)]+matrice_dep[theta][int(r-delta_r)])/delta_r**2+(matrice_dep[theta][int(r+delta_r)])/(2*delta_r*r)+(matrice_dep[theta+1][r]+matrice_dep[theta-1][r])/(delta_theta*r)**2
                         )
+            matrice_dep = nouvelle_matrice.copy()
 
             for k in circuit_list:
                 matrice_dep[k[1], k[0]] = k[2]
+            #print(constant_voltage[60, 74], matrice_dep[60, 74])
 
         return ScalarField(matrice_dep)
 
