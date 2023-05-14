@@ -99,7 +99,7 @@ class BiotSavartEquationSolver:
         #         B = np.cross(r, electric_current[circuit_coords[:, 0], circuit_coords[:, 1]])[:, 2] / (module_r ** 3)
         #         champ_B[x, y][2] = np.sum(B, axis=0)
         #         #print(champ_B)
-                
+
         # return VectorField(np.nan_to_num(mu_0 * champ_B / (4 * pi), nan=0))
         circuit_coords = np.array([(r, theta) for r, row in enumerate(electric_current) for theta, val in enumerate(row) if val.any()])
         champ_B = np.zeros((electric_current.shape[0], electric_current.shape[1], 3))

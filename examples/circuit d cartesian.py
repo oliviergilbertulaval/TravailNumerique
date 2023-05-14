@@ -25,7 +25,7 @@ if __name__ == "__main__":
     cartesian_variables = Symbol("x"), Symbol("y")
     x, y = cartesian_variables
 
-    
+
     x_expression_diagonal = x
     y_expression_diagonal = y
     diagonal_eqs = (x_expression_diagonal, y_expression_diagonal)
@@ -54,14 +54,14 @@ if __name__ == "__main__":
         # print((arch[key], arch[key +1]))
         wires.append(Wire(arch[key], arch[key+1],
                           diagonal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE))
-        
+
     #batterie
     for key in range(int(3/2*precision + 1 - Battery_length/2), int(3/2*precision + 1 + Battery_length/2)):
         # print('B', key)
         # print((arch[key], arch[key +1]))
         wires.append(VoltageSource(arch[key], arch[key+1],
                           diagonal_eqs, cartesian_variables, BATTERY_VOLTAGE))
-        
+
     #batterie à top gauche
     for key in range(int(3/2*precision + 1 + Battery_length/2), int(2*precision+2)):
         # print('lr', key)
