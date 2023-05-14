@@ -170,7 +170,14 @@ class World:
         elif(self._coordinate_system == CoordinateSystem.POLAR):
             print("TEST")
             test = LaplaceEquationSolver(nb_relaxation_iterations)
+            # test2 = BiotSavartEquationSolver()
             self._potential = test._solve_in_polar_coordinate(self._circuit_voltage, self.delta_q1, self.delta_q2)
+            
+            self._electric_field= -self._potential.gradient()
+
+            # self._magnetic_field = test2._solve_in_cartesian_coordinate(self._circuit_current, self.delta_q1, self.delta_q2)
+
+            # self._energy_flux = self._electric_field.cross(self._magnetic_field)
 
 
         return 4
