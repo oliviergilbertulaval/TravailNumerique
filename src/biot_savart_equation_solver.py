@@ -85,6 +85,7 @@ class BiotSavartEquationSolver:
             B_z(r, θ) are the 3 components of the magnetic vector at a given point (r, θ) in space. Note that
             B_r = B_θ = 0 is always True in our 2D world.
         """
+        return 0
         raise NotImplementedError
 
     def solve(
