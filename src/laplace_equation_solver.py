@@ -132,7 +132,7 @@ class LaplaceEquationSolver:
             for k in circuit_list:
                 matrice_dep[k[1], k[0]] = k[2]
 
-            return ScalarField(matrice_dep)
+        return ScalarField(matrice_dep)
 
 
     def solve(

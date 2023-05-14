@@ -25,16 +25,16 @@ if __name__ == "__main__":
     radial_eqs = (r_expression_radial, theta_expression_radial)
 
     wires = [
-        Wire((40, 15), (40, 40), tangential_eqs, polar_variables, LOW_WIRE_RESISTANCE),
-        VoltageSource((40, 40), (40, 50), tangential_eqs, polar_variables, BATTERY_VOLTAGE),
-        Wire((40, 50), (40, 75), tangential_eqs, polar_variables, LOW_WIRE_RESISTANCE),
-        Wire((40, 75), (60, 75), radial_eqs, polar_variables, LOW_WIRE_RESISTANCE),
-        Wire((60, 75), (60, 50), tangential_eqs, polar_variables, LOW_WIRE_RESISTANCE),
-        Wire((60, 50), (60, 40), tangential_eqs, polar_variables, HIGH_WIRE_RESISTANCE),
-        Wire((60, 40), (60, 15), tangential_eqs, polar_variables, LOW_WIRE_RESISTANCE),
-        Wire((60, 15), (40, 15), radial_eqs, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((40, 15*pi/(2* WORLD_SHAPE[1])), (40, 40*pi/(2* WORLD_SHAPE[1])), tangential_eqs, polar_variables, LOW_WIRE_RESISTANCE),
+        VoltageSource((40, 40*pi/(2* WORLD_SHAPE[1])), (40, 50*pi/(2* WORLD_SHAPE[1])), tangential_eqs, polar_variables, BATTERY_VOLTAGE),
+        Wire((40, 50*pi/(2* WORLD_SHAPE[1])), (40, 75*pi/(2* WORLD_SHAPE[1])), tangential_eqs, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((40, 75*pi/(2* WORLD_SHAPE[1])), (60, 75*pi/(2* WORLD_SHAPE[1])), radial_eqs, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((60, 75*pi/(2* WORLD_SHAPE[1])), (60, 50*pi/(2* WORLD_SHAPE[1])), tangential_eqs, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((60, 50*pi/(2* WORLD_SHAPE[1])), (60, 40*pi/(2* WORLD_SHAPE[1])), tangential_eqs, polar_variables, HIGH_WIRE_RESISTANCE),
+        Wire((60, 40*pi/(2* WORLD_SHAPE[1])), (60, 15*pi/(2* WORLD_SHAPE[1])), tangential_eqs, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((60, 15*pi/(2* WORLD_SHAPE[1])), (40, 15*pi/(2* WORLD_SHAPE[1])), radial_eqs, polar_variables, LOW_WIRE_RESISTANCE),
     ]
-    ground_position = (40, 40)
+    ground_position = (40, 40*pi/(2* WORLD_SHAPE[1]))
 
     circuit = Circuit(wires, ground_position)
     world = World(circuit=circuit, coordinate_system=CoordinateSystem.POLAR, shape=WORLD_SHAPE)

@@ -85,7 +85,33 @@ class BiotSavartEquationSolver:
             B_z(r, θ) are the 3 components of the magnetic vector at a given point (r, θ) in space. Note that
             B_r = B_θ = 0 is always True in our 2D world.
         """
-        return 0
+        # circuit_coords = np.array([(x, y) for x, row in enumerate(electric_current) for y, val in enumerate(row) if val.any()])
+        # #print(circuit_coords, circuit_coords[:, 0], circuit_coords[:,1])
+        # champ_B = np.zeros((electric_current.shape[0], electric_current.shape[1], 3))
+        # for x in range(electric_current.shape[0]):
+        #     for y in range(electric_current.shape[1]):
+        #         r = np.stack((circuit_coords[:, 0] - x, circuit_coords[:, 1] - y, np.zeros(len(circuit_coords[:, 0]))), axis=-1)
+        #         #print(r)
+        #         module_r = np.sqrt((r ** 2).sum(axis=-1))
+        #         #print(module_r)
+        #         #print(electric_current[circuit_coords[:, 0], circuit_coords[:, 1]] )
+        #         #print(np.cross(r, electric_current[circuit_coords[:, 0], circuit_coords[:, 1]])[:, 2])
+        #         B = np.cross(r, electric_current[circuit_coords[:, 0], circuit_coords[:, 1]])[:, 2] / (module_r ** 3)
+        #         champ_B[x, y][2] = np.sum(B, axis=0)
+        #         #print(champ_B)
+                
+        # return VectorField(np.nan_to_num(mu_0 * champ_B / (4 * pi), nan=0))
+        circuit_coords = np.array([(r, theta) for r, row in enumerate(electric_current) for theta, val in enumerate(row) if val.any()])
+        champ_B = np.zeros((electric_current.shape[0], electric_current.shape[1], 3))
+        for r in range(electric_current.shape[0]):
+            for theta in range(electric_current.shape[1]):
+                r_vec = np.stack((r - circuit_coords[:, 0], theta - circuit_coords[:, 1], np.zeros(len(circuit_coords[:, 0]))), axis=-1)
+                module_r = np.sqrt((r_vec ** 2).sum(axis=-1))
+                I_vec = np.stack((electric_current[circuit_coords[:, 0], circuit_coords[:, 1], 0], electric_current[circuit_coords[:, 0], circuit_coords[:, 1], 1], np.zeros(len(circuit_coords[:, 0]))), axis=-1)
+                B_vec = np.cross(r_vec, I_vec)
+                champ_B[r, theta][2] = np.sum(B_vec[:, 2] / (module_r ** 3), axis=0)
+                
+        return VectorField(np.nan_to_num(mu_0 * champ_B / (4 * pi), nan=0))
         raise NotImplementedError
 
     def solve(
