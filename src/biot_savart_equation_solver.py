@@ -56,7 +56,7 @@ class BiotSavartEquationSolver:
                 champ_B[x, y][2] = np.sum(B, axis=0)
                 #print(champ_B)
                 
-        return VectorField(np.nan_to_num(mu_0 * champ_B / (4 * np.pi), nan=0))
+        return VectorField(np.nan_to_num(mu_0 * champ_B / (4 * pi), nan=0))
 
     def _solve_in_polar_coordinate(
             self,
@@ -85,6 +85,7 @@ class BiotSavartEquationSolver:
             B_z(r, θ) are the 3 components of the magnetic vector at a given point (r, θ) in space. Note that
             B_r = B_θ = 0 is always True in our 2D world.
         """
+        return 0
         raise NotImplementedError
 
     def solve(

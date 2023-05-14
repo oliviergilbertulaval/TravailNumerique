@@ -114,26 +114,21 @@ class LaplaceEquationSolver:
                 if val != 0:
                     circuit_list.append((r, theta, val))
         print(circuit_list)
-        fig = plt.figure(figsize=(8, 8))
-        ax = fig.add_subplot(111)
-
-        ax.imshow(constant_voltage, origin="lower", cmap="hsv")
-        plt.show()
 
 
-        matrice_dep = constant_voltage
+
+        matrice_dep = constant_voltage.copy()
 
 
         for i in range(self.nb_iterations):
-            V_ng = np.zeros((constant_voltage.shape[1] + 2, constant_voltage.shape[0] + 2))
-            V_ng[0:-2, 1:-1]=matrice_dep
-            V_nd = np.zeros((constant_voltage.shape[1] + 2, constant_voltage.shape[0] + 2))
-            V_nd[2:, 1:-1]=matrice_dep
-            V_nh = np.zeros((constant_voltage.shape[1] + 2, constant_voltage.shape[0] + 2))
-            V_nh[1:-1, 0:-2]=matrice_dep
-            V_nb = np.zeros((constant_voltage.shape[1] + 2, constant_voltage.shape[0] + 2))
-            V_nb[1:-1, 2:]=matrice_dep
-            matrice_dep=((1/delta_r**2+1/delta_theta**2)**(-1) * 0.5 * ((V_nd+V_ng)/delta_r**2+(V_nb+V_nh)/delta_theta**2))[1:-1, 1:-1]
+            for theta, ligne in enumerate(matrice_dep):
+                for r, val in enumerate(ligne):
+                    if((r!=0 and r!=constant_voltage.shape[1]-1) and theta!=constant_voltage.shape[0]-1):
+                        #comme on a un np.array, on doit quand meme utiliser delta_theta=1 pour les indices
+                        matrice_dep[theta][r] = 1/(2/delta_r**2+2/(r*delta_theta)**2)*(
+                            (matrice_dep[theta][int(r+delta_r)]+matrice_dep[theta][int(r-delta_r)])/delta_r**2+(matrice_dep[theta][int(r+delta_r)])/(2*delta_r*r)+(matrice_dep[theta+1][r]+matrice_dep[theta-1][r])/(delta_theta*r)**2
+                        )
+
             for k in circuit_list:
                 matrice_dep[k[1], k[0]] = k[2]
 
