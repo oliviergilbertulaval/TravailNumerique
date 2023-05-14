@@ -125,8 +125,8 @@ class LaplaceEquationSolver:
                 for r, val in enumerate(ligne):
                     if((r!=0 and r!=constant_voltage.shape[1]-1) and theta!=constant_voltage.shape[0]-1):
                         #comme on a un np.array, on doit quand meme utiliser delta_theta=1 pour les indices
-                        matrice_dep[theta][r] = 1/(2/delta_r**2+1/(r*delta_r)+2/(r*delta_theta)**2)*(
-                            (matrice_dep[theta][int(r+delta_r)]+matrice_dep[theta][int(r-delta_r)])/delta_r**2+(matrice_dep[theta][int(r+delta_r)])/(delta_r*r)+(matrice_dep[theta+1][r]+matrice_dep[theta-1][r])/(delta_theta*r)**2
+                        matrice_dep[theta][r] = 1/(2/delta_r**2+2/(r*delta_theta)**2)*(
+                            (matrice_dep[theta][int(r+delta_r)]+matrice_dep[theta][int(r-delta_r)])/delta_r**2+(matrice_dep[theta][int(r+delta_r)])/(2*delta_r*r)+(matrice_dep[theta+1][r]+matrice_dep[theta-1][r])/(delta_theta*r)**2
                         )
 
             for k in circuit_list:

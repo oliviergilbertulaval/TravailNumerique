@@ -56,7 +56,7 @@ class BiotSavartEquationSolver:
                 champ_B[x, y][2] = np.sum(B, axis=0)
                 #print(champ_B)
                 
-        return VectorField(np.nan_to_num(mu_0 * champ_B / (4 * np.pi), nan=0))
+        return VectorField(np.nan_to_num(mu_0 * champ_B / (4 * pi), nan=0))
 
     def _solve_in_polar_coordinate(
             self,
