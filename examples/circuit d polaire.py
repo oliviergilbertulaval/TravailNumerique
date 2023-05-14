@@ -25,21 +25,21 @@ if __name__ == "__main__":
     radial_eqs = (r_expression_radial, theta_expression_radial)
 
     wires = [
-        Wire((40, 20), (40, 40), tangential_eqs, polar_variables, LOW_WIRE_RESISTANCE),
-        Wire((40, 40), (40, 60), tangential_eqs, polar_variables, HIGH_WIRE_RESISTANCE),
-        Wire((40, 60), (40, 80), tangential_eqs, polar_variables, LOW_WIRE_RESISTANCE),
-        Wire((40, 80), (20, 80), radial_eqs, polar_variables, LOW_WIRE_RESISTANCE),
-        Wire((20, 80), (20, 60), tangential_eqs, polar_variables, LOW_WIRE_RESISTANCE),
-        VoltageSource((20, 60), (20, 40), tangential_eqs, polar_variables, BATTERY_VOLTAGE),
-        Wire((20, 40), (20, 20), tangential_eqs, polar_variables, LOW_WIRE_RESISTANCE),
-        Wire((20, 20), (40, 20), radial_eqs, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((40, 15), (40, 40), tangential_eqs, polar_variables, LOW_WIRE_RESISTANCE),
+        VoltageSource((40, 40), (40, 50), tangential_eqs, polar_variables, BATTERY_VOLTAGE),
+        Wire((40, 50), (40, 75), tangential_eqs, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((40, 75), (60, 75), radial_eqs, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((60, 75), (60, 50), tangential_eqs, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((60, 50), (60, 40), tangential_eqs, polar_variables, HIGH_WIRE_RESISTANCE),
+        Wire((60, 40), (60, 15), tangential_eqs, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((60, 15), (40, 15), radial_eqs, polar_variables, LOW_WIRE_RESISTANCE),
     ]
-    ground_position = (20, 60)
+    ground_position = (40, 40)
 
     circuit = Circuit(wires, ground_position)
     world = World(circuit=circuit, coordinate_system=CoordinateSystem.POLAR, shape=WORLD_SHAPE)
     world.show_circuit(
-        {0: (40, 20), 1: (40, 40), 2: (40, 60), 3: (40, 80), 4:(20, 80), 5:(20, 60), 6:(20, 40), 7:(20, 20)}
+        {0: (40, 15), 1: (40, 40), 2: (40, 50), 3: (40, 75), 4:(60, 75), 5:(60, 50), 6:(60, 40), 7:(60, 15), 8:(40,15)}
     )
     world.compute()
     world.show_all()

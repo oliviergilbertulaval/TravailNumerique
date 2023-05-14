@@ -19,7 +19,7 @@ if __name__ == "__main__":
     HIGH_WIRE_RESISTANCE = 1.0/High_resistance_length
     
     #nombre de segments pour représenter les deux arcs de cercles
-    precision = 5
+    precision = 10
     LOW_WIRE_RESISTANCE = 0.01/(2*precision + 2 - Battery_length - High_resistance_length)
 
     cartesian_variables = Symbol("x"), Symbol("y")
