@@ -113,7 +113,7 @@ class LaplaceEquationSolver:
             for r, val in enumerate(line):
                 if val != 0:
                     circuit_list.append((r, theta, val))
-        print("WTF")
+        print(circuit_list)
         fig = plt.figure(figsize=(8, 8))
         ax = fig.add_subplot(111)
 

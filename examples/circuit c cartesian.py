@@ -10,7 +10,7 @@ from circle_function import top_circle_function, bottom_circle_function, full_ci
 if __name__ == "__main__":
     WORLD_SHAPE = (101, 101)
     precision = 30
-    BATTERY_VOLTAGE = 1.0/precision
+    BATTERY_VOLTAGE = -1.0/precision
     HIGH_WIRE_RESISTANCE = 1.0/precision
     LOW_WIRE_RESISTANCE = 0.01/precision
 
