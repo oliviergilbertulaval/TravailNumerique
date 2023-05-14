@@ -108,7 +108,7 @@ class BiotSavartEquationSolver:
                 r_vec = np.stack((r - circuit_coords[:, 0], theta - circuit_coords[:, 1], np.zeros(len(circuit_coords[:, 0]))), axis=-1)
                 module_r = np.sqrt((r_vec ** 2).sum(axis=-1))
                 I_vec = np.stack((electric_current[circuit_coords[:, 0], circuit_coords[:, 1], 0], electric_current[circuit_coords[:, 0], circuit_coords[:, 1], 1], np.zeros(len(circuit_coords[:, 0]))), axis=-1)
-                B_vec = np.cross(r_vec, I_vec)
+                B_vec = np.cross(I_vec, r_vec)
                 champ_B[r, theta][2] = np.sum(B_vec[:, 2] / (module_r ** 3), axis=0)
                 
         return VectorField(np.nan_to_num(mu_0 * champ_B / (4 * pi), nan=0))
