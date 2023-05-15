@@ -52,6 +52,7 @@ class LaplaceEquationSolver:
             always gives V(x, y) = 0 if (x, y) is not a point belonging to an electrical component of the circuit.
         """
 
+        # on crée une liste avec les valeurs de circuit
         circuit_list = []
         for y, line in enumerate(constant_voltage):
             for x, val in enumerate(line):
@@ -62,17 +63,28 @@ class LaplaceEquationSolver:
 
         matrice_dep = constant_voltage
 
-
+        # on crée 4 matrices 103 par 103 en décalant dans chaque direction la matrice_dep
         for i in range(self.nb_iterations):
+            # décalé vers la gauche
             V_ng = np.zeros((constant_voltage.shape[1] + 2, constant_voltage.shape[0] + 2))
             V_ng[0:-2, 1:-1]=matrice_dep
+            
+            # décalé vers la droite
             V_nd = np.zeros((constant_voltage.shape[1] + 2, constant_voltage.shape[0] + 2))
             V_nd[2:, 1:-1]=matrice_dep
+            
+            # décalé vers le haut
             V_nh = np.zeros((constant_voltage.shape[1] + 2, constant_voltage.shape[0] + 2))
             V_nh[1:-1, 0:-2]=matrice_dep
+            
+            # décalé vers le bas
             V_nb = np.zeros((constant_voltage.shape[1] + 2, constant_voltage.shape[0] + 2))
             V_nb[1:-1, 2:]=matrice_dep
+            
+            # on calcule avec le laplace
             matrice_dep=((1/delta_x**2+1/delta_y**2)**(-1) * 0.5 * ((V_nd+V_ng)/delta_x**2+(V_nb+V_nh)/delta_y**2))[1:-1, 1:-1]
+            
+            # on re-initialise les valeurs du circuits (elles ne devraient pas changer)
             for k in circuit_list:
                 matrice_dep[k[1], k[0]] = k[2]
 
@@ -108,31 +120,32 @@ class LaplaceEquationSolver:
             the electrical components and in the empty space between the electrical components, while the field V
             always gives V(r, θ) = 0 if (r, θ) is not a point belonging to an electrical component of the circuit.
         """
+        # on crée une liste avec les valeurs de circuit
         circuit_list = []
         for theta, line in enumerate(constant_voltage):
             for r, val in enumerate(line):
                 if val != 0:
                     circuit_list.append((r, theta, val))
-        #print(circuit_list)
 
-
-
+        # on crée des copies
         matrice_dep = constant_voltage.copy()
         nouvelle_matrice = constant_voltage.copy()
 
+        # on itère en theta et en r
         for i in range(self.nb_iterations):
             for theta, ligne in enumerate(matrice_dep):
                 for r, val in enumerate(ligne):
                     if((r!=0 and r!=constant_voltage.shape[1]-1) and theta!=constant_voltage.shape[0]-1):
-                        #comme on a un np.array, on doit quand meme utiliser delta_theta=1 pour les indices
+                        # comme on a un np.array, on doit quand meme utiliser delta_theta=1 pour les indices
+                        # on utilise laplace
                         nouvelle_matrice[theta][r] = 1/(2/delta_r**2+2/(r*delta_theta)**2)*(
                             (matrice_dep[theta][int(r+delta_r)]+matrice_dep[theta][int(r-delta_r)])/delta_r**2+(matrice_dep[theta][int(r+delta_r)]-matrice_dep[theta][int(r-delta_r)])/(2*delta_r*r)+(matrice_dep[theta+1][r]+matrice_dep[theta-1][r])/(delta_theta*r)**2
                         )
             matrice_dep = nouvelle_matrice.copy()
 
+            # on re-initialise les valeurs du circuits (elles ne devraient pas changer) 
             for k in circuit_list:
                 matrice_dep[k[1], k[0]] = k[2]
-            #print(constant_voltage[60, 74], matrice_dep[60, 74])
 
         return ScalarField(matrice_dep)
 
